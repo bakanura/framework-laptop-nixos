@@ -32,7 +32,9 @@ Welcome to your NixOS system configuration! This file is where you define what g
 
 - **Print Support:** Enabled with CUPS
 - **Touchpad Support:** Enabled
-- **Fingerprint Authentication:** Enabled with fprintd (Note: Ensure all drivers are updated via fwupd for proper functionality on framework 13, avoid using tod drivers)
+- **Fingerprint Authentication:** Enabled with fprintd
+  - Ensure all drivers are updated via fwupd for proper functionality on framework 13
+  - avoid using tod drivers
 - **Power Management:** Enabled with powertop
 - **Thermal Data:** Enabled
 - **Steam Integration:** Enabled with hardware support
