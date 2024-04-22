@@ -24,7 +24,7 @@ Welcome to your NixOS system configuration! This file is where you define what g
 
 ## Hardware and Drivers
 
-- **Firmware Updates:** Enabled with LVFS testing
+- **Firmware Updates:** Enabled with LVFS testing (Note: Make sure to update all drivers to the latest version, especially for framework 13)
 - **Sound:** Enabled with PipeWire
 - **Bluetooth:** Experimental settings enabled
 
@@ -32,7 +32,7 @@ Welcome to your NixOS system configuration! This file is where you define what g
 
 - **Print Support:** Enabled with CUPS
 - **Touchpad Support:** Enabled
-- **Fingerprint Authentication:** Enabled with libfprint-2-tod1-vfs0090 driver
+- **Fingerprint Authentication:** Enabled with fprintd (Note: Ensure all drivers are updated via fwupd for proper functionality on framework 13, avoid using tod drivers)
 - **Power Management:** Enabled with powertop
 - **Thermal Data:** Enabled
 - **Steam Integration:** Enabled with hardware support
