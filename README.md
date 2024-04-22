@@ -1,4 +1,4 @@
-# NixOS Configuration
+# NixOS Configuration for the Framework 13 AMD series laptop
 
 Welcome to your NixOS system configuration! This file is where you define what gets installed and how your system behaves. Below is a breakdown of various settings and options you can tweak.
 
