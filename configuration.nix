@@ -64,23 +64,18 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-# Enable sound with pipewire.
-sound.enable = true;
-hardware.pulseaudio.enable = false;
-security.rtkit.enable = true;
-nixpkgs.config.pulseaudio = true;
-hardware.pulseaudio.extraConfig = "load-module module-combine-sink";
-services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-};
-hardware.bluetooth.settings = {
-	General = {
-		Experimental = true;
-	};
-};
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  nixpkgs.config.pulseaudio = true;
+  hardware.pulseaudio.extraConfig = "load-module module-combine-sink";
+  services.pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+  };
 
   programs.bash.shellAliases = { mixer = "pulsemixer"; };
   # Enable touchpad support (enabled default in most desktopManager).
