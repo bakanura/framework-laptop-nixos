@@ -3,13 +3,25 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let
+# add unstable channel declaratively
+  unstableTarball =
+    fetchTarball
+      https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+in
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  [ # include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
+  nixpkgs.config = {
+    packageOverrides = pkgs: {
+      unstable = import unstableTarball {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -99,6 +111,16 @@ hardware.bluetooth.settings = {
   # Enable thermal data
   services.thermald.enable = true;
 
+  # Enable OBS CAM
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
+  boot.extraModprobeConfig = ''
+    options v4l2loopback devices=1 video_nr=1 card_label="OBS Cam" exclusive_caps=1
+    options v4l2loopback video_nr=2 card_label="Droidcam" width=640,1920 max_width=1920 height=480,1080 max_height=1080
+  '';
+  security.polkit.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lunchbag = {
     isNormalUser = true;
@@ -106,21 +128,28 @@ hardware.bluetooth.settings = {
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
 	firefox
+	android-tools
+	unstable.droidcam	
 	lutris
-	wine
-	discord
-	steam
+	unstable.wine
+	unstable.discord
+	unstable.steam
 	thunderbird
-	vscode
-	terraform
+	unstable.vscode
+	unstable.terraform
 	pulseaudioFull
 	# Console mixer
-	pulsemixer
+	unstable.pulsemixer
 	# Equalizer on sterids
-	easyeffects
-	ldacbt
-	fprintd
-	fwupd
+	unstable.easyeffects
+	unstable.ldacbt
+	unstable.fprintd
+	unstable.fwupd
+	obs-studio
+	unstable.v4l-utils
+	unstable.buttercup-desktop
+	unstable.keepass
+  unstable.git
     ];
   };
 
@@ -138,16 +167,30 @@ hardware.bluetooth.settings = {
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+	pkgs.firefox
+	(pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {})
+	pkgs.android-tools
+	pkgs.droidcam
 	pkgs.steam
+	pkgs.v4l-utils
 	pkgs.ldacbt
 	pkgs.fprintd
 	pkgs.fwupd
-	pkgs.vscode
+	pkgs.obs-studio
+	pkgs.buttercup-desktop
+  git
+	(pkgs.wrapOBS {
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+    ];
+  })
 	(vscode-with-extensions.override {
 	    vscodeExtensions = with vscode-extensions; [
 	      bbenoist.nix
