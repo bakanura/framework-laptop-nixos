@@ -147,6 +147,7 @@ hardware.bluetooth.settings = {
 	pkgs.ldacbt
 	pkgs.fprintd
 	pkgs.fwupd
+	pkgs.vscode
 	(vscode-with-extensions.override {
 	    vscodeExtensions = with vscode-extensions; [
 	      bbenoist.nix
