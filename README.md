@@ -26,7 +26,7 @@ Welcome to your NixOS system configuration! This file is where you define what g
 
 - **Firmware Updates:** Enabled with LVFS testing (Note: Make sure to update all drivers to the latest version, especially for framework 13)
 - **Sound:** Enabled with PipeWire
-- **Bluetooth:** Experimental settings enabled
+- **Bluetooth:** Experimental settings enabled **(New)**
 
 ## Programs and Services
 
@@ -57,14 +57,14 @@ Welcome to your NixOS system configuration! This file is where you define what g
   - PulseAudio
   - Console mixer (pulsemixer)
   - Equalizer on steroids (easyeffects)
-  - LDAC Bluetooth
+  - LDAC Bluetooth **(New)**
   - Fingerprint daemon (fprintd)
   - Firmware updates (fwupd)
 
 ## System Packages
 
 - Steam
-- LDAC Bluetooth
+- LDAC Bluetooth **(New)**
 - Fingerprint daemon (fprintd)
 - Firmware updates (fwupd)
 - VSCode with extensions
