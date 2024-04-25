@@ -63,6 +63,7 @@ Welcome to your NixOS system configuration! This file is where you define what g
 
 ## System Packages
 
+- **Nixpkgs Unstable Channel:** Added **(New)**
 - Steam
 - LDAC Bluetooth **(New)**
 - Fingerprint daemon (fprintd)
