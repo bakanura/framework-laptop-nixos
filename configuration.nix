@@ -4,9 +4,17 @@
 
 { config, pkgs, ... }:
 
+let
+# add nixos-hardware channel declaratively
+  hardwareTarball =
+    fetchTarball
+      https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
+      # Add the framework 16 profile for latest fingerprint support from nixos-hardware repo
+      <nixos-hardware/framework/16-inch/cpu/7040-amd>
       ./hardware-configuration.nix
     ];
 
