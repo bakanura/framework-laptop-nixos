@@ -54,7 +54,6 @@ in
 
   # Enable firmware updates with fwupd
   services.fwupd.enable = true;
-  services.fwupd.extraRemotes = [ "lvfs-testing" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -89,10 +88,6 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
 
-  # Fingerprint with fprintd
-  services.fprintd.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090; #(If the vfs0090 Driver does not work, use the following driver)
-
   # Powermanagement
   powerManagement = {
     enable = true;
@@ -122,7 +117,6 @@ in
 	# Equalizer on sterids
 	easyeffects
 	ldacbt
-	fprintd
 	fwupd
     ];
   };
@@ -148,7 +142,6 @@ in
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 	pkgs.steam
 	pkgs.ldacbt
-	pkgs.fprintd
 	pkgs.fwupd
 	pkgs.vscode
 	(vscode-with-extensions.override {
