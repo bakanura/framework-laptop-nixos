@@ -67,6 +67,7 @@ Welcome to your NixOS system configuration! This file is where you define what g
 - LDAC Bluetooth
 - Fingerprint daemon (fprintd)
 - Firmware updates (fwupd)
+- Added hardwareTarball to add support for Firmware 16 profile (fingerprint without enabling fprintd)
 - VSCode with extensions
 - Go
 - Terraform
