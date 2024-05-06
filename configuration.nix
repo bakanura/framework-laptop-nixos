@@ -8,10 +8,15 @@ let
   unstableTarball =
     fetchTarball
       https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+  hardwareTarball =
+    fetchTarball
+      https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
 in
 {
   imports =
   [ # include the results of the hardware scan.
+    <nixos-hardware/framework/16-inch/7040-amd>
+    <nixos-hardware/framework/13-inch/7040-amd>
     ./hardware-configuration.nix
   ];
 
@@ -55,10 +60,12 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  #Enable DisplayLink Drivers
+  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
   # Enable firmware updates with fwupd
   services.fwupd.enable = true;
-  services.fwupd.extraRemotes = [ "lvfs-testing" ];
+#  services.fwupd.extraRemotes = [ "lvfs-testing" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -99,8 +106,8 @@ hardware.bluetooth.settings = {
   services.xserver.libinput.enable = true;
 
   # Fingerprint with fprintd
-  services.fprintd.enable = true;
-  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090; #(If the vfs0090 Driver does not work, use the following driver)
+  #services.fprintd.enable = true;
+  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090; #(If the vfs0090 Driver does not work, use the following driver)
 
   # Powermanagement
   powerManagement = {
@@ -121,6 +128,19 @@ hardware.bluetooth.settings = {
   '';
   security.polkit.enable = true;
 
+  
+  services.rpcbind.enable = true; # needed for NFS
+
+  boot.initrd = {
+  supportedFilesystems = [ "nfs" ];
+  kernelModules = [ "nfs" ];
+  };
+
+  #fileSystems."/mnt/terrabyte" = {
+  #device = "192.168.0.146:/mnt/terrabyte";
+  #fsType = "nfs";
+  #};
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.lunchbag = {
     isNormalUser = true;
@@ -128,11 +148,15 @@ hardware.bluetooth.settings = {
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
 	firefox
+	libnfs
+	nfs-utils
+	notesnook
+	joplin-desktop
 	android-tools
 	unstable.droidcam	
 	lutris
 	unstable.wine
-	unstable.discord
+	discord
 	unstable.steam
 	thunderbird
 	unstable.vscode
@@ -144,12 +168,14 @@ hardware.bluetooth.settings = {
 	unstable.easyeffects
 	unstable.ldacbt
 	unstable.fprintd
-	unstable.fwupd
+	fwupd
 	obs-studio
 	unstable.v4l-utils
 	unstable.buttercup-desktop
 	unstable.keepass
-  unstable.git
+  	git
+  	rpi-imager
+	angryipscanner
     ];
   };
 
@@ -172,25 +198,30 @@ hardware.bluetooth.settings = {
 
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+	pkgs.nfs-utils
 	pkgs.firefox
 	(pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true;}) {})
 	pkgs.android-tools
 	pkgs.droidcam
 	pkgs.steam
 	pkgs.v4l-utils
-	pkgs.ldacbt
+	pkgs.angryipscanner
+  pkgs.ldacbt
 	pkgs.fprintd
 	pkgs.fwupd
 	pkgs.obs-studio
 	pkgs.buttercup-desktop
-  git
+	pkgs.joplin-desktop  	
+	pkgs.git
+	pkgs.libnfs
+  pkgs.rpi-imager
 	(pkgs.wrapOBS {
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-backgroundremoval
-      obs-pipewire-audio-capture
-    ];
-  })
+	    	plugins = with pkgs.obs-studio-plugins; [
+	      	wlrobs
+	      	obs-backgroundremoval
+	      	obs-pipewire-audio-capture
+	    	];
+  	})
 	(vscode-with-extensions.override {
 	    vscodeExtensions = with vscode-extensions; [
 	      bbenoist.nix
@@ -209,6 +240,7 @@ hardware.bluetooth.settings = {
 	pkgs.go
 	pkgs.terraform
 	pkgs.pulseaudioFull
+	pkgs.notesnook
   #  wget
   ];
 
