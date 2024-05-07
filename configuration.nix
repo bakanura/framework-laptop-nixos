@@ -101,9 +101,9 @@ in
   services.thermald.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.lunchbag = {
+  users.users. = {
     isNormalUser = true;
-    description = "Lunchbag";
+    description = "NAMEHERE";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
 	firefox
