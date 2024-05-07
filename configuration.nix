@@ -2,20 +2,27 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, fetchurl, fetchTarball, ... }:
 let
 # add unstable channel declaratively
   unstableTarball =
-    fetchTarball
-      https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz;
+    builtins.fetchTarball
+      "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+
   hardwareTarball =
-    fetchTarball
-      https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+   fetchTarball {
+      url = "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
+      hash = "";
+   };
+  HardwareURL =
+   fetchurl {
+		url = "https://www.synaptics.com/sites/default/files/exe_files/2023-08/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu5.8-EXE.zip";
+		hash = "";
+   };
 in
 {
   imports =
   [ # include the results of the hardware scan.
-    <nixos-hardware/framework/16-inch/7040-amd>
     <nixos-hardware/framework/13-inch/7040-amd>
     ./hardware-configuration.nix
   ];
@@ -61,11 +68,13 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   #Enable DisplayLink Drivers
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  services.xserver = {
+	videoDrivers =  [ "displaylink" "modesetting" ];
+  };
 
   # Enable firmware updates with fwupd
   services.fwupd.enable = true;
-#  services.fwupd.extraRemotes = [ "lvfs-testing" ];
+  services.fwupd.extraRemotes = [ "lvfs-testing" ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -142,9 +151,9 @@ hardware.bluetooth.settings = {
   #};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.lunchbag = {
+  users.users.bakanura = {
     isNormalUser = true;
-    description = "Lunchbag";
+    description = "bakanura";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
 	firefox
