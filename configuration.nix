@@ -7,8 +7,11 @@
 let
 # add nixos-hardware channel declaratively
   hardwareTarball =
-    fetchTarball
-      https://github.com/NixOS/nixos-hardware/archive/master.tar.gz;
+   fetchTarball {
+      url = "https://github.com/NixOS/nixos-hardware/archive/master.tar.gz";
+      hash = "";
+   };
+
 in
 {
   imports =
