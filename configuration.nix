@@ -150,41 +150,64 @@ hardware.bluetooth.settings = {
   #fsType = "nfs";
   #};
 
+  services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+     governor = "powersave";
+     turbo = "never";
+    };
+    charger = {
+     governor = "performance";
+     turbo = "auto";
+    };
+  };
+
+  services.fprintd.enable = true;
+
+  security.pam.services.swaylock = {};
+  security.pam.services.swaylock.fprintAuth = true;
+
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.bakanura = {
     isNormalUser = true;
     description = "bakanura";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-	firefox
-	libnfs
-	nfs-utils
-	notesnook
-	joplin-desktop
-	android-tools
-	unstable.droidcam	
-	lutris
-	unstable.wine
-	discord
-	unstable.steam
-	thunderbird
-	unstable.vscode
-	unstable.terraform
-	pulseaudioFull
-	# Console mixer
-	unstable.pulsemixer
-	# Equalizer on sterids
-	unstable.easyeffects
-	unstable.ldacbt
-	unstable.fprintd
-	fwupd
-	obs-studio
-	unstable.v4l-utils
-	unstable.buttercup-desktop
-	unstable.keepass
-  	git
-  	rpi-imager
-	angryipscanner
+        firefox
+        libnfs
+        nfs-utils
+        notesnook
+        joplin-desktop
+        android-tools
+        unstable.droidcam	
+        lutris
+        unstable.wine
+        discord
+        unstable.steam
+        thunderbird
+        unstable.vscode
+        unstable.terraform
+        pulseaudioFull
+        # Console mixer
+        unstable.pulsemixer
+        # Equalizer on sterids
+        unstable.easyeffects
+        unstable.ldacbt
+        unstable.fprintd
+        fwupd
+        obs-studio
+        unstable.v4l-utils
+        unstable.buttercup-desktop
+        unstable.keepass
+        git
+        rpi-imager
+        angryipscanner
+        drawio
+        libreoffice
+        ventoy-full
     ];
   };
 
@@ -224,6 +247,7 @@ hardware.bluetooth.settings = {
 	pkgs.git
 	pkgs.libnfs
   pkgs.rpi-imager
+  pkgs.ventoy-full
 	(pkgs.wrapOBS {
 	    	plugins = with pkgs.obs-studio-plugins; [
 	      	wlrobs
@@ -250,7 +274,8 @@ hardware.bluetooth.settings = {
 	pkgs.terraform
 	pkgs.pulseaudioFull
 	pkgs.notesnook
-  #  wget
+  pkgs.drawio
+  pkgs.libreoffice
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
